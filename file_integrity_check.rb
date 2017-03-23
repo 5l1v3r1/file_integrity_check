@@ -9,7 +9,8 @@ require 'socket'
 require './directories_reader.rb'
 
 def log(message)
-	File.open("integrity.log", "w+") { |file| file.puts message }
+	time = Time.new
+	File.open("integrity.log", "a+") { |file| file.puts "[#{time}] - " + message }
 end
 
 def send_changes_to_logstash(head,files)
@@ -19,7 +20,8 @@ def send_changes_to_logstash(head,files)
 		for i in 0..files.length-1 do message = message + "; " + files[i] end
 		socket.puts message.gsub("-","").gsub("+","")
 	rescue StandardError
-		log("No pudo conectarse al servidor Logstash")
+		log("No pudo conectarse al servidor Logstash: #{ARGV[1]}")
+		puts "No pudo conectarse al servidor Logstash: #{ARGV[1]}"
 	end
 end
 
