@@ -7,33 +7,28 @@ require 'parallel'
 require './directories_reader.rb'
 
 def integrity_check(directory)
-	
-		new_ls = directory.dols
-		if(directory.ls != new_ls)
-			puts "Ha cambiado el directorio " + directory.path
-			diff = Diffy::Diff.new(directory.ls, new_ls).to_s
-			#Busca si se han eliminado ficheros
-			deleted_files = diff.to_s.scan(/^-.*$/)
-			#Busca si se han añadido ficheros
-			added_files = diff.to_s.scan(/^\+.*$/)
+	if(directory.ls_hash != directory.do_ls_hash)
+		puts "Ha cambiado el directorio " + directory.path
+		diff = Diffy::Diff.new(directory.ls, directory.do_ls).to_s
+		#Busca si se han eliminado ficheros
+		deleted_files = diff.to_s.scan(/^-.*$/)
+		#Busca si se han añadido ficheros
+		added_files = diff.to_s.scan(/^\+.*$/)
 
-			if(deleted_files.length > 0)
-				puts "Ficheros eliminados: "
-				for i in 0..deleted_files.length-1
-					puts "\t" + deleted_files[i]
-				end
+		if(deleted_files.length > 0)
+			puts "Ficheros eliminados: "
+			for i in 0..deleted_files.length-1
+				puts "\t" + deleted_files[i]
 			end
-			if(added_files.length > 0)
-				puts "Ficheros añadidos: "
-				for i in 0..added_files.length-1
-					puts "\t" + added_files[i]
-				end
-			end
-
-			directory.ls = new_ls
 		end
-	sleep(1)
-	
+		if(added_files.length > 0)
+			puts "Ficheros añadidos: "
+			for i in 0..added_files.length-1
+				puts "\t" + added_files[i]
+			end
+		end
+		directory.update
+	end
 end
 
 ## Main
@@ -45,6 +40,7 @@ loop do
 	results = Parallel.map(dirs_under_check.directories,in_threads: 2) do |dir|
 			sem.synchronize { integrity_check(dir) }
 	end
+	sleep(1)
 end
 
 

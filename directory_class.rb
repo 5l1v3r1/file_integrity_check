@@ -8,7 +8,7 @@ class Directory
 	attr_reader :path
 	attr_reader :system_type
 	attr_accessor :ls
-	attr_reader :ls_hash
+	attr_accessor :ls_hash
 
 	def initialize(path_,system_type_)
 
@@ -22,11 +22,14 @@ class Directory
 
 		@path = path_
 		@system_type = system_type_
-		@ls = dols
-		@ls_hash = ""
+		@ls = do_ls
+		@ls_hash = do_ls_hash
+
+		
 	end
 
-	def dols()
+	#Retorna un ls sobre el directorio
+	def do_ls()
 		if @system_type == WINDOWS then 
 			return %x(dir #{@path})
 		end 
@@ -35,7 +38,14 @@ class Directory
 		end
 	end
 
-	def set_ls_hash()
-		@ls_hash = md5.digest @ls
+	def do_ls_hash()
+		md5 = Digest::MD5.new
+		return md5.hexdigest do_ls
+	end
+
+	def update()
+		@ls = do_ls
+		md5 = Digest::MD5.new
+		@ls_hash = md5.hexdigest @ls
 	end
 end
