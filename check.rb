@@ -6,11 +6,11 @@ require 'diffy'
 #sudo gem install parallel
 require 'parallel'
 require 'socket'
-require './directories_reader.rb'
+require './directories_reader_class.rb'
 
 def log(message)
 	time = Time.new
-	File.open("integrity.log", "a+") { |file| file.puts "[#{time}] - " + message }
+	File.open("error.log", "a+") { |file| file.puts "[#{time}] - " + message }
 end
 
 def send_changes_to_logstash(head,files)
