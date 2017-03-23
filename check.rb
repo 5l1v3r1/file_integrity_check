@@ -60,13 +60,13 @@ end
 
 
 if ! ARGV[0] || ARGV[0] == "-h" || ARGV[1] == ""
-	puts "-----------------------------------------------------"
-	puts "|  Directory Integrity Check 0.8b - Gonzalo García  |"
-	puts "|  Uso:                                             |"
-	puts "|      ./integrity.rb test.txt <ip_logstash>        |"
-	puts "|                                                   |"
-	puts "|  Plataformas: Unix/Linux                          |"
-	puts "-----------------------------------------------------"
+	puts "------------------------------------------------------------------"
+	puts "|  Directory Integrity Check for Logstash 0.8b - Gonzalo García  |"
+	puts "|  Uso:                                            			   |"
+	puts "|      ./check.rb test.txt <ip_logstash>                         |"
+	puts "|                                                                |"
+	puts "|  Plataformas: Unix/Linux                                       |"
+	puts "------------------------------------------------------------------"
 	exit
 end
 

@@ -1,4 +1,4 @@
-# 0.8b File Integrity Check
+# 0.8b Directory Integrity Check for Logstash
 TODO:
 
 Delete dependences.
@@ -16,7 +16,7 @@ Parallel -> sudo gem install parallel
 Usage:
 
 ````
-$ ruby integrity_check.rb <text_file> <logstash_ip>
+$ ruby check.rb <text_file> <logstash_ip>
 ````
 Paths file
 ````
