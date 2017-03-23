@@ -1,4 +1,7 @@
 # 0.2 File Integrity Check
+TODO:
+
+Make the directories integrity check  multithread.
 
 Dependencies:
 
