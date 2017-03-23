@@ -1,7 +1,8 @@
-# 0.2 File Integrity Check
+# 0.5b File Integrity Check
 TODO:
 
-Make the directories integrity check  multithread.
+Delete dependences.
+Send change alerts to Logstash.
 
 Dependencies:
 
@@ -9,6 +10,7 @@ Dependencies:
 Ruby 2.0.0
 
 Diffy -> sudo gem install diffy
+Parallel -> sudo gem install parallel
 `````
 
 Usage:

@@ -7,7 +7,7 @@ class Directory
 
 	attr_reader :path
 	attr_reader :system_type
-	attr_reader :ls
+	attr_accessor :ls
 	attr_reader :ls_hash
 
 	def initialize(path_,system_type_)
@@ -22,19 +22,17 @@ class Directory
 
 		@path = path_
 		@system_type = system_type_
-		@ls = ""
+		@ls = dols
 		@ls_hash = ""
 	end
 
-	def ls()
+	def dols()
 		if @system_type == WINDOWS then 
-			@ls = %x(dir #{@path})
+			return %x(dir #{@path})
 		end 
 		if @system_type == UNIX then 
-			@ls = %x(ls #{@path})
+			return %x(ls #{@path})
 		end
-		#set_ls_hash
-		return @ls
 	end
 
 	def set_ls_hash()

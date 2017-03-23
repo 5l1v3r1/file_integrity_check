@@ -3,15 +3,15 @@ $VERBOSE = nil
 
 #sudo gem install diffy
 require 'diffy'
+require 'parallel'
 require './directories_reader.rb'
 
 def integrity_check(directory)
-	ls = directory.ls
-	loop do
-		new_ls = directory.ls
-		if(ls != new_ls)
+	
+		new_ls = directory.dols
+		if(directory.ls != new_ls)
 			puts "Ha cambiado el directorio " + directory.path
-			diff = Diffy::Diff.new(ls, new_ls).to_s
+			diff = Diffy::Diff.new(directory.ls, new_ls).to_s
 			#Busca si se han eliminado ficheros
 			deleted_files = diff.to_s.scan(/^-.*$/)
 			#Busca si se han añadido ficheros
@@ -30,24 +30,27 @@ def integrity_check(directory)
 				end
 			end
 
-			ls = new_ls
+			directory.ls = new_ls
 		end
-	sleep(5)
-	end
+	sleep(1)
+	
 end
 
 ## Main
 
 dirs_under_check = DirectoriesReader.new(ARGV[0])
 
-for i in 0..dirs_under_check.count-1 do
-	integrity_check dirs_under_check[i]
+sem = Mutex.new
+loop do
+	results = Parallel.map(dirs_under_check.directories,in_threads: 2) do |dir|
+			sem.synchronize { integrity_check(dir) }
+	end
 end
 
 
 if ! ARGV[0] || ARGV[0] == "-h" || ARGV[1] == ""
 	puts "-----------------------------------------------"
-	puts "|  File Integrity Check 0.1b - Gonzalo García |"
+	puts "|  File Integrity Check 0.5b - Gonzalo García  |"
 	puts "|  Uso:                                       |"
 	puts "|      ./integrity.rb test.txt                |"
 	puts "|                                             |"
